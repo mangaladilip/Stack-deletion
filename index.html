@@ -117,7 +117,7 @@ button {
 </div>
 
 <!-- Controls -->
-<button onclick="nextStep()">Next</button>
+<button onclick="POPStep()">POP</button>
 <button onclick="resetSim()">Refresh</button>
 
 <script>
@@ -145,7 +145,7 @@ function clearHighlight() {
     document.querySelectorAll('.line').forEach(l => l.classList.remove('active'));
 }
 
-function nextStep() {
+function POPStep() {
     if (stack.length === 0) {
         alert("Stack is empty (Underflow)");
         return;
