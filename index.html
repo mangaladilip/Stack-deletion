@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stack Pop Simulation</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    color: #232323;
+    text-align: center;
+    background: #f5f5f5;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    margin-top: 30px;
+    align-items: flex-start;
+}
+
+/* Code */
+.code {
+    text-align: left;
+    background: #fff;
+    padding: 15px;
+    border: 2px solid #232323;
+    width: 280px;
+}
+
+.line {
+    padding: 6px;
+}
+
+.active {
+    background: #724b9e;
+    color: white;
+}
+
+/* Stack */
+.stack-box {
+    width: 200px;
+    height: 300px;
+    background: #e8d227;
+    border: 3px solid #232323;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 10px;
+}
+
+.block {
+    width: 120px;
+    height: 40px;
+    border: 2px solid #232323;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+}
+
+.top {
+    background: #724b9e;
+    color: white;
+}
+
+/* Output */
+.output-box {
+    width: 200px;
+    height: 120px;
+    border: 3px solid #232323;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+/* Buttons */
+button {
+    margin: 15px;
+    padding: 10px 20px;
+    background: #724b9e;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Stack Pop Simulation</h2>
+
+<div class="container">
+
+    <!-- Code -->
+    <div class="code">
+        <div class="line" id="l1">item = stack.pop()</div>
+        <div class="line" id="l2">print(item)</div>
+    </div>
+
+    <!-- Stack -->
+    <div>
+        <h3>Stack</h3>
+        <div class="stack-box" id="stackBox"></div>
+    </div>
+
+    <!-- Output -->
+    <div>
+        <h3>Output</h3>
+        <div class="output-box" id="outputBox">--</div>
+    </div>
+
+</div>
+
+<!-- Controls -->
+<button onclick="nextStep()">Next</button>
+<button onclick="resetSim()">Refresh</button>
+
+<script>
+let initialStack = [10, 20, 30, 40, 50];
+let stack = [...initialStack];
+
+function renderStack() {
+    const box = document.getElementById('stackBox');
+    box.innerHTML = "";
+
+    stack.forEach((val, index) => {
+        let div = document.createElement('div');
+        div.className = "block";
+        div.innerText = val;
+
+        if (index === stack.length - 1) {
+            div.classList.add("top");
+        }
+
+        box.appendChild(div);
+    });
+}
+
+function clearHighlight() {
+    document.querySelectorAll('.line').forEach(l => l.classList.remove('active'));
+}
+
+function nextStep() {
+    if (stack.length === 0) {
+        alert("Stack is empty (Underflow)");
+        return;
+    }
+
+    clearHighlight();
+
+    // Highlight pop line
+    document.getElementById("l1").classList.add("active");
+
+    // Pop value
+    let item = stack.pop();
+
+    renderStack();
+
+    // Show output after slight delay
+    setTimeout(() => {
+        clearHighlight();
+        document.getElementById("l2").classList.add("active");
+        document.getElementById("outputBox").innerText = item;
+    }, 500);
+}
+
+function resetSim() {
+    stack = [...initialStack];
+    document.getElementById("outputBox").innerText = "--";
+    clearHighlight();
+    renderStack();
+}
+
+// Initial render
+renderStack();
+</script>
+
+</body>
+</html>
