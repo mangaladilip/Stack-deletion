@@ -67,7 +67,27 @@
         text-align: center;
         border-radius: 8px;
         font-size: 20px;
-        font-weight: 500;
+    }
+
+    /* Output label */
+    .output-label {
+        text-align: center;
+        font-size: 20px;
+        font-weight: 600;
+        color: #2f2a44;
+        margin-top: 5px;
+    }
+
+    /* Output container */
+    .output-container {
+        background: #f9f9fa;
+        color: #000;
+        margin: 10px;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 20px;
+        text-align: center;
+        min-height: 40px;
     }
 
     .buttons {
@@ -109,17 +129,27 @@
 <div class="title">Pop operation simulator</div>
 
 <div class="instructions">
-    Click POP → Removes top element → Observe stack (LIFO) → Reset to restart
+    Click POP → item = stack.pop() → print(item) → Observe stack (LIFO)
 </div>
 
 <div class="main">
 
+    <!-- Code -->
     <div class="code-container" id="codeBox">
         stack = [10, 20, 30, 40, 50]
     </div>
 
+    <!-- Stack -->
     <div class="stack-container" id="stackBox"></div>
 
+</div>
+
+<!-- Output label -->
+<div class="output-label">Output</div>
+
+<!-- Output box -->
+<div class="output-container" id="outputBox">
+    Output will appear here
 </div>
 
 <div class="buttons">
@@ -147,25 +177,30 @@ function updateStack() {
 
 function popValue() {
     let codeBox = document.getElementById("codeBox");
+    let outputBox = document.getElementById("outputBox");
 
     if (stack.length === 0) {
         codeBox.innerHTML += "<br>Stack Underflow!";
+        outputBox.innerHTML = "Stack Underflow!";
         return;
     }
 
-    let removed = stack.pop();
+    let item = stack.pop();
     updateStack();
 
-    codeBox.innerHTML += "<br>stack.pop() → " + removed;
+    codeBox.innerHTML += "<br>item = stack.pop()";
+    codeBox.innerHTML += "<br>print(item)";
+
+    outputBox.innerHTML = item;
 }
 
 function resetStack() {
     stack = [...initialStack];
     document.getElementById("codeBox").innerHTML = "stack = [10, 20, 30, 40, 50]";
+    document.getElementById("outputBox").innerHTML = "Output will appear here";
     updateStack();
 }
 
-// Initial render
 updateStack();
 </script>
 
