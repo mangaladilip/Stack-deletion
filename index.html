@@ -2,182 +2,171 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Stack Pop Simulation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Pop operation simulator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    color: #232323;
-    text-align: center;
-    background: #f5f5f5;
-}
+    body {
+        margin: 0;
+        font-family: 'Outfit', sans-serif;
+        background: #f2f1e8;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
 
-.container {
-    display: flex;
-    justify-content: center;
-    gap: 60px;
-    margin-top: 30px;
-    align-items: flex-start;
-}
+    .title {
+        text-align: center;
+        font-size: 36px;
+        font-weight: 600;
+        margin: 10px 0;
+    }
 
-/* Code */
-.code {
-    text-align: left;
-    background: #fff;
-    padding: 15px;
-    border: 2px solid #232323;
-    width: 280px;
-}
+    .instructions {
+        text-align: center;
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
 
-.line {
-    padding: 6px;
-}
+    .main {
+        display: flex;
+        flex: 1;
+        gap: 15px;
+        padding: 10px;
+    }
 
-.active {
-    background: #724b9e;
-    color: white;
-}
+    .code-container {
+        flex: 1;
+        background: #2f2a44;
+        color: #f9f9fa;
+        padding: 15px;
+        border-radius: 12px;
+        font-size: 20px;
+        overflow-y: auto;
+    }
 
-/* Stack */
-.stack-box {
-    width: 200px;
-    height: 300px;
-    background: #e8d227;
-    border: 3px solid #232323;
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    padding: 10px;
-}
+    .stack-container {
+        flex: 1;
+        background: #724b9e;
+        padding: 15px;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+    }
 
-.block {
-    width: 120px;
-    height: 40px;
-    border: 2px solid #232323;
-    margin: 5px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-}
+    .stack-block {
+        background: #77a766;
+        color: #f2f1e8;
+        padding: 15px;
+        margin: 8px;
+        width: 60%;
+        text-align: center;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: 500;
+    }
 
-.top {
-    background: #724b9e;
-    color: white;
-}
+    .buttons {
+        text-align: center;
+        margin: 10px 0;
+    }
 
-/* Output */
-.output-box {
-    width: 200px;
-    height: 120px;
-    border: 3px solid #232323;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-}
+    button {
+        padding: 12px 25px;
+        margin: 5px;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: 'Outfit', sans-serif;
+    }
 
-/* Buttons */
-button {
-    margin: 15px;
-    padding: 10px 20px;
-    background: #724b9e;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
+    .pop {
+        background: #77a766;
+        color: #f2f1e8;
+    }
+
+    .reset {
+        background: #724b9e;
+        color: #f9f9fa;
+    }
+
+    .footer {
+        text-align: center;
+        font-size: 16px;
+        padding: 5px;
+    }
+
 </style>
 </head>
 
 <body>
 
-<h2>Stack Pop Simulation</h2>
+<div class="title">Pop operation simulator</div>
 
-<div class="container">
+<div class="instructions">
+    Click POP → Removes top element → Observe stack (LIFO) → Reset to restart
+</div>
 
-    <!-- Code -->
-    <div class="code">
-        <div class="line" id="l1">item = stack.pop()</div>
-        <div class="line" id="l2">print(item)</div>
+<div class="main">
+
+    <div class="code-container" id="codeBox">
+        stack = [10, 20, 30, 40, 50]
     </div>
 
-    <!-- Stack -->
-    <div>
-        <h3>Stack</h3>
-        <div class="stack-box" id="stackBox"></div>
-    </div>
-
-    <!-- Output -->
-    <div>
-        <h3>Output</h3>
-        <div class="output-box" id="outputBox">--</div>
-    </div>
+    <div class="stack-container" id="stackBox"></div>
 
 </div>
 
-<!-- Controls -->
-<button onclick="POPStep()">POP</button>
-<button onclick="resetSim()">Refresh</button>
+<div class="buttons">
+    <button class="pop" onclick="popValue()">Pop</button>
+    <button class="reset" onclick="resetStack()">Reset</button>
+</div>
+
+<div class="footer">@curiousEd.ai</div>
 
 <script>
 let initialStack = [10, 20, 30, 40, 50];
 let stack = [...initialStack];
 
-function renderStack() {
-    const box = document.getElementById('stackBox');
-    box.innerHTML = "";
+function updateStack() {
+    let stackBox = document.getElementById("stackBox");
+    stackBox.innerHTML = "";
 
-    stack.forEach((val, index) => {
-        let div = document.createElement('div');
-        div.className = "block";
-        div.innerText = val;
-
-        if (index === stack.length - 1) {
-            div.classList.add("top");
-        }
-
-        box.appendChild(div);
-    });
+    for (let i = stack.length - 1; i >= 0; i--) {
+        let block = document.createElement("div");
+        block.className = "stack-block";
+        block.innerText = stack[i];
+        stackBox.appendChild(block);
+    }
 }
 
-function clearHighlight() {
-    document.querySelectorAll('.line').forEach(l => l.classList.remove('active'));
-}
+function popValue() {
+    let codeBox = document.getElementById("codeBox");
 
-function POPStep() {
     if (stack.length === 0) {
-        alert("Stack is empty (Underflow)");
+        codeBox.innerHTML += "<br>Stack Underflow!";
         return;
     }
 
-    clearHighlight();
+    let removed = stack.pop();
+    updateStack();
 
-    // Highlight pop line
-    document.getElementById("l1").classList.add("active");
-
-    // Pop value
-    let item = stack.pop();
-
-    renderStack();
-
-    // Show output after slight delay
-    setTimeout(() => {
-        clearHighlight();
-        document.getElementById("l2").classList.add("active");
-        document.getElementById("outputBox").innerText = item;
-    }, 500);
+    codeBox.innerHTML += "<br>stack.pop() → " + removed;
 }
 
-function resetSim() {
+function resetStack() {
     stack = [...initialStack];
-    document.getElementById("outputBox").innerText = "--";
-    clearHighlight();
-    renderStack();
+    document.getElementById("codeBox").innerHTML = "stack = [10, 20, 30, 40, 50]";
+    updateStack();
 }
 
 // Initial render
-renderStack();
+updateStack();
 </script>
 
 </body>
