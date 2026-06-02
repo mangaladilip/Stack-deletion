@@ -584,14 +584,11 @@
   const CODE_LINES = [
     { id:'init',     html: `stack = <span class="num-c">[10, 20, 30, 40, 50]</span>` },
     { id:'blank1',   html: `` },
-    { id:'def',      html: `<span class="kw">def</span> <span class="fn">pop</span>(stack):` },
-    { id:'check',    html: `&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> <span class="call">len</span>(stack) == <span class="num-c">0</span>:` },
-    { id:'raise',    html: `&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">raise</span> <span class="err-c">IndexError</span>(<span class="str-c">"no element to pop"</span>)` },
-    { id:'body',     html: `&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> stack.<span class="call">pop</span>()` },
-    { id:'blank2',   html: `` },
     { id:'comment',  html: `<span class="comment"># Pop from stack</span>` },
-    { id:'call',     html: `item = <span class="fn">pop</span>(stack)` },
-    { id:'print',    html: `<span class="call">print</span>(item, stack)` },
+    { id:'call',     html: `item = stack.<span class="call">pop</span>()` },
+    { id:'blank2',   html: `` },
+    { id:'print',    html: `<span class="call">print</span>(item)` },
+    { id:'print2',   html: `<span class="call">print</span>(stack)` },
   ];
  
   function renderCode(highlightId, errId) {
@@ -640,11 +637,7 @@
  
     busy = true;
     highlightLine('call');
-    setTimeout(() => highlightLine('check'), 350);
-    setTimeout(() => highlightLine('body'), 700);
- 
     setTimeout(() => {
-      // animate top item out
       const items = stackItems.querySelectorAll('.stack-item');
       const topEl = items[items.length - 1];
       const popped = stack[stack.length - 1];
@@ -661,7 +654,7 @@
           busy = false;
         }, 380);
       }
-    }, 1000);
+    }, 500);
   }
  
   function fillStack() {
